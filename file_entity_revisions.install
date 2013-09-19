@@ -78,11 +78,9 @@ function file_entity_revisions_install() {
 
   // Queue all files to be acted on during cron runs using the Queue API.
   $queue = DrupalQueue::get('file_entity_revisions_create');
-  $result = db_query('SELECT fid FROM {file_managed}');
+  $result = db_select('file_managed', 'f')->fields('f')->execute();
   foreach ($result as $record) {
-    if ($file = file_load($record->fid)) {
-      $queue->createItem($file->fid);
-    }
+    $queue->createItem($record);
   }
 }
 
@@ -93,4 +91,3 @@ function file_entity_revisions_uninstall() {
   // Remove the added column to the core {file_managed} table.
   db_drop_field('file_managed', 'vid');
 }
-

@@ -98,12 +98,13 @@ function file_entity_revisions_cron_queue_info() {
  * @param $fid
  *   A file ID.
  */
-function file_entity_revisions_create($file) {
-  if (isset($file->fid)) {
-    _file_save_revision($file);
-  }
+function file_entity_revisions_create($record) {
+  _file_save_revision($record);
 }
 
+/**
+ * Delete file entity revisions.
+ */
 function file_entity_revision_delete($revision_id, $entity_type) {
   if ($revision = _file_entity_load(NULL, $revision_id)) {
     // Prevent deleting the current revision.
